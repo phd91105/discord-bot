@@ -1,17 +1,10 @@
-import app from './app';
-import { port } from './config';
-import { discord } from './config';
+import { client } from './app';
 
 const main = async () => {
   try {
-    discord.on('ready', () => {
+    client.on('ready', () => {
       console.log(`> Bot is on ready`);
     });
-
-    app.listen(port);
-    console.info(`Server on http://localhost:${port}`);
-
-    // refreshTokenGpt.start();
   } catch (error) {
     console.error(error);
   }

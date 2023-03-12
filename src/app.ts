@@ -1,5 +1,15 @@
-import express from 'express';
+import 'dotenv/config';
+import { Client, GatewayIntentBits } from 'discord.js';
+import { bootstrap } from './commands';
 
-const app = express();
+const { Guilds, MessageContent, GuildMessages, GuildMembers } =
+  GatewayIntentBits;
+const client = new Client({
+  intents: [Guilds, MessageContent, GuildMessages, GuildMembers],
+});
 
-export default app;
+client.login(process.env.TOKEN).then(() => {
+  bootstrap(client);
+});
+
+export { client };

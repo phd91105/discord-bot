@@ -2,16 +2,17 @@ import { Client, Events } from 'discord.js';
 
 import { bingChat } from '../config';
 
-export const gpt3 = (client: Client): void => {
+export const bingClient = (client: Client): void => {
+  const botId = '<@807105325114720257>';
   client.on(Events.MessageCreate, async (message) => {
-    const mess = message.content.split(' ');
-    if (mess[0].toLowerCase() === '!gpt') {
+    if (message.content.startsWith(botId)) {
+      const id = message.author.id;
+      const msgRef = await message.reply('🤔');
       try {
-        const msgRef = await message.reply('🤔');
-        const data = await bingChat(message.content.replace('!gpt', ''));
+        const data = await bingChat(message.content.replace(botId, ''), id);
         await msgRef.edit(data);
       } catch (e) {
-        await message.reply('Fail');
+        await msgRef.edit('Fail');
       }
     }
   });

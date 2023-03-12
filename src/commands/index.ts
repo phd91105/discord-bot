@@ -1,7 +1,9 @@
 import { Client } from 'discord.js';
 
-import { gpt3 } from './bing';
+import { bingClient } from './bing';
+import { cherryPick } from './cherryPick';
 
 export const bootstrap = (client: Client): void => {
-  gpt3(client);
+  bingClient(client);
+  cherryPick(client);
 };
