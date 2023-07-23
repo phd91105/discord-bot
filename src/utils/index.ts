@@ -34,7 +34,7 @@ export function createEmbed(
   color: ColorResolvable,
 ) {
   const listMsg = _.map(commit, (item) =>
-    item.message.replace('refs ', '').substring(0, 25),
+    getSubstringByByteLength(item.message.replace('refs ', ''), 35),
   ).join('\n');
   const listCommitter = _.map(commit, (item) =>
     item.committer.replace('bwv-', ''),
@@ -66,4 +66,26 @@ export function createEmbed(
     .setColor(color);
 
   return embed;
+}
+
+export function getSubstringByByteLength(
+  inputString: string,
+  byteLength: number,
+) {
+  let truncatedString = '';
+  let currentByteLength = 0;
+
+  for (let i = 0; i < inputString.length; i++) {
+    const charCode = inputString.charCodeAt(i);
+    const charByteLength = charCode < 0x10000 ? 2 : 4;
+
+    if (currentByteLength + charByteLength <= byteLength) {
+      truncatedString += inputString[i];
+      currentByteLength += charByteLength;
+    } else {
+      break;
+    }
+  }
+
+  return truncatedString;
 }
