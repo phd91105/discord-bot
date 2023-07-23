@@ -69,32 +69,38 @@ export function createEmbed(
   commit: any,
   color: ColorResolvable,
 ) {
-  const listMsg = _.map(commit, (item) =>
-    truncate2byte(item.message.replace('refs ', ''), 35),
+  const listMsg = _.map(
+    commit,
+    (item) =>
+      `[2;36m${item.message.match(/#\d+/)[0].trim()}[0m ` +
+      truncate2byte(
+        `${item.message
+          .replace(/refs\s/g, '')
+          .replace(/#\d+/g, '')
+          .trim()}`,
+        25,
+      ),
   ).join('\n');
 
-  const listCommitter = _.map(commit, (item) =>
-    item.committer.replace('bwv-', ''),
-  ).join('\n');
-
-  const listSHA = _.map(commit, 'sha').join('\n');
+  const listCommitter = _.map(commit, (item) => `[2;33m${item.committer}[0m`).join('\n');
+  const listSHA = _.map(commit, (item) => `[2;34m${item.sha}[0m`).join('\n');
 
   const embed = new EmbedBuilder()
     .setTitle(title)
     .addFields([
       {
-        name: 'Message',
-        value: '```\n' + listMsg + '\n```',
+        name: 'Commit message',
+        value: '```ansi\n' + listMsg + '\n```',
         inline: true,
       },
       {
-        name: 'Committer',
-        value: '```\n' + listCommitter + '\n```',
+        name: 'Author',
+        value: '```ansi\n' + listCommitter + '\n```',
         inline: true,
       },
       {
         name: 'SHA',
-        value: '```\n' + listSHA + '\n```',
+        value: '```ansi\n' + listSHA + '\n```',
         inline: true,
       },
     ])
