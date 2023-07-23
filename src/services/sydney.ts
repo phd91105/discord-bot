@@ -52,7 +52,6 @@ export const askSydney = async (
   }
 
   const response = await sydney.sendMessage(prompt, options);
-  console.log(response.conversationId);
 
   return response;
 };

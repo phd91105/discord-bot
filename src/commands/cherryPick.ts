@@ -32,8 +32,6 @@ export const cherryPick = (client: Client): void => {
       });
       const listIssue = _.map(parsedData.data, '#');
 
-      const id = message.author.id;
-
       try {
         const [api, front, batch] = await Promise.all([
           octokit.request(url, {
