@@ -1,6 +1,42 @@
 import { ColorResolvable, EmbedBuilder } from 'discord.js';
 import _ from 'lodash';
 
+function truncateUtf8(str: string, n: number) {
+  let l = 0;
+  let r = '';
+  for (let i = 0; i < str.length; i++) {
+    const c = str.charCodeAt(i);
+    if (
+      (c >= 0x0 && c < 0x81) ||
+      c === 0xf8f0 ||
+      (c >= 0xff61 && c < 0xffa0) ||
+      (c >= 0xf8f1 && c < 0xf8f4)
+    ) {
+      l += 1;
+    } else {
+      l += 2;
+    }
+    if (l <= n) {
+      r = r.concat(str[i]);
+    }
+  }
+  return r;
+}
+
+function truncate2byte(s: string, n: number) {
+  if (s !== undefined && s !== null) {
+    const r = truncateUtf8(s.toString(), n);
+
+    if (r.length !== s.toString().length) {
+      return `${r}...`;
+    } else {
+      return r;
+    }
+  }
+
+  return s;
+}
+
 export function filterCommit(listIssue: any, { data }: any) {
   const filtered = _.filter(data, (item) => {
     const issue = item.commit?.message.match(/#\d+/);
@@ -34,11 +70,13 @@ export function createEmbed(
   color: ColorResolvable,
 ) {
   const listMsg = _.map(commit, (item) =>
-    getSubstringByByteLength(item.message.replace('refs ', ''), 35),
+    truncate2byte(item.message.replace('refs ', ''), 35),
   ).join('\n');
+
   const listCommitter = _.map(commit, (item) =>
     item.committer.replace('bwv-', ''),
   ).join('\n');
+
   const listSHA = _.map(commit, 'sha').join('\n');
 
   const embed = new EmbedBuilder()
@@ -66,26 +104,4 @@ export function createEmbed(
     .setColor(color);
 
   return embed;
-}
-
-export function getSubstringByByteLength(
-  inputString: string,
-  byteLength: number,
-) {
-  let truncatedString = '';
-  let currentByteLength = 0;
-
-  for (let i = 0; i < inputString.length; i++) {
-    const charCode = inputString.charCodeAt(i);
-    const charByteLength = charCode < 0x10000 ? 2 : 4;
-
-    if (currentByteLength + charByteLength <= byteLength) {
-      truncatedString += inputString[i];
-      currentByteLength += charByteLength;
-    } else {
-      break;
-    }
-  }
-
-  return truncatedString;
 }
