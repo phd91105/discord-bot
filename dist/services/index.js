@@ -1,1 +1,1 @@
-export * from './sydney.js';
+"use strict";

@@ -1,1 +1,1 @@
-export * from './bing.js';
+"use strict";

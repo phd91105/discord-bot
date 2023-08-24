@@ -1,3 +1,4 @@
+import { exit } from 'process';
 import { client } from './app.js';
 const main = async () => {
     try {
@@ -7,6 +8,7 @@ const main = async () => {
     }
     catch (error) {
         console.error(error);
+        exit(0);
     }
 };
 main();

@@ -35,9 +35,7 @@
     "typescript": "^5.1.6"
   },
   "dependencies": {
-    "@keyv/sqlite": "^3.6.5",
     "@octokit/core": "^5.0.0",
-    "@waylaidwanderer/chatgpt-api": "^1.37.2",
     "axios": "^1.4.0",
     "common-tags": "^1.8.2",
     "discord.js": "^14.12.1",
