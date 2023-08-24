@@ -1,9 +1,9 @@
-FROM node:18-alpine AS dependencies
+FROM arm32v7/node:18-alpine AS dependencies
 WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn install --prod
 
-FROM node:18-alpine AS build
+FROM arm32v7/node:18-alpine AS build
 WORKDIR /app
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
