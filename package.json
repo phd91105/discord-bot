@@ -5,12 +5,11 @@
   "repository": "https://github.com/phd91105/gpt",
   "author": "Phạm Duy <PHD051199@gmail.com>",
   "license": "UNLICENSED",
-  "type": "module",
   "scripts": {
     "prebuild": "npm run clean",
     "start": "node dist/index.js",
     "dev": "yarn nodemon src/index.ts",
-    "build": "tsc-esm -p .",
+    "build": "tsc -p .",
     "clean": "rm -rf dist",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint --fix \"src/**/*.ts\"",
@@ -19,7 +18,6 @@
     "test": "yarn lint && yarn prettier"
   },
   "devDependencies": {
-    "@digitak/tsc-esm": "^3.1.4",
     "@types/common-tags": "^1.8.1",
     "@types/lodash": "^4.14.191",
     "@types/node": "^18.11.7",
